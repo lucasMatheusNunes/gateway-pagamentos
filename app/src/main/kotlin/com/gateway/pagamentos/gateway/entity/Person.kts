@@ -14,7 +14,11 @@ class Person(
     @NotNull
     @Size(min=2, max=30)
     @Column(name = "first_name")
-    private val firstName: String
+    private val firstName: String,
+
+    @NotNull
+    @Column(name = "last_name")
+    private val lastName: String
 ){
 
 }
