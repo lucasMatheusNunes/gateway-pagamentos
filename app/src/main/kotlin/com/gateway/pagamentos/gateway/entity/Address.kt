@@ -5,33 +5,36 @@ import javax.validation.constraints.NotEmpty
 import javax.validation.constraints.NotNull
 
 @Entity
-@Table(name="address")
 class Address (
         @Id
         @GeneratedValue(strategy = GenerationType.AUTO)
-        private val id: Int,
+        private var id: Int,
 
         @NotEmpty
         @Column(name = "line_1")
-        private val line1: String,
+        private var line1: String,
 
         @Column(name = "line_2")
-        private val line2: String,
+        private var line2: String,
 
         @NotNull
         @Column(name = "zip_code")
-        private val zipCode: Int,
+        private var zipCode: Int,
 
         @NotEmpty
         @Column(name = "city")
-        private val city: String,
+        private var city: String,
 
         @NotEmpty
         @Column(name = "state")
-        private val state: String,
+        private var state: String,
 
         @NotEmpty
         @Column(name = "country")
-        private val country: String
+        private var country: String,
+
+        @ManyToOne(fetch = FetchType.EAGER)
+        @JoinColumn(name = "id_client")
+        var client: Client
 
     )

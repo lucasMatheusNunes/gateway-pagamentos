@@ -8,14 +8,22 @@ import javax.validation.constraints.NotEmpty
 @Entity
 @Table(name="client")
 class Client (
+
         @Id
         @GeneratedValue(strategy = GenerationType.AUTO)
-        private val id: Int,
+        private var id: Int,
 
         @NotEmpty
         @Column(name = "real_name")
-        private val realName: String,
+        private var realName: String,
 
         @Email
-        private val email: String
+        private var email: String,
+
+        @OneToMany(mappedBy = "client", cascade = arrayOf(CascadeType.ALL))
+        private var address: List<Address>,
+
+        @OneToMany(mappedBy = "client", cascade = arrayOf(CascadeType.ALL))
+        private var phone: List<Phone>
+
     )
