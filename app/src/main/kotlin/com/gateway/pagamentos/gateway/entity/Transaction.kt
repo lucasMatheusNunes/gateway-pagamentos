@@ -9,8 +9,7 @@ import javax.validation.constraints.Size
 import com.fasterxml.jackson.annotation.JsonFormat
 import com.fasterxml.jackson.annotation.JsonIgnore
 
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
+
 
 
 
@@ -24,11 +23,11 @@ import org.hibernate.annotations.UpdateTimestamp;
 
     @JsonFormat(pattern="dd/MM/yyyy HH:mm")
     @Column(updatable=false)
-   // @CreationTimestamp
+    //@CreatedDate
     val dataCreate: String,
 
     @JsonFormat(pattern="dd/MM/yyyy HH:mm")
-    //@UpdateTimestamp
+    //@LastModifiedDate
     val dataUpdate: String,
 
     /**
@@ -173,9 +172,7 @@ import org.hibernate.annotations.UpdateTimestamp;
      * Objeto que deve possuir as informações de cobrança da transação. Obrigatório com o antifraude habilitado.
      */
 
-    @Column
-    @OneToOne(mappedBy = "transaction", cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY, optional = true)
+    @OneToOne(fetch = FetchType.LAZY)
     private val billing: Billing,
 
 
@@ -183,9 +180,7 @@ import org.hibernate.annotations.UpdateTimestamp;
      * Objeto que deve possuir as informações de envio do que foi comprado. Deve ser preenchido
      * no caso da venda de um bem físico.
      */
-    @Column
-    @OneToOne(mappedBy = "shipping", cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY, optional = true)
+    @OneToOne(fetch = FetchType.LAZY)
     private val shipping: Shipping,
 
     /**

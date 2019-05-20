@@ -45,7 +45,11 @@ class Shipping(
      */
     @NotNull
     @Column
-    val address: String
+    val address: String,
+
+    @OneToOne
+    private val transaction: Transaction
+
 
 )
 {

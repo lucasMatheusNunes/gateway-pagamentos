@@ -20,9 +20,7 @@ class Billing(
         @Column
         private val address: String, //Address
 
-        @MapsId
-        @OneToOne(fetch = FetchType.LAZY)
-        @JoinColumn(name = "id")
+        @OneToOne
         val transaction: Transaction
 
 
