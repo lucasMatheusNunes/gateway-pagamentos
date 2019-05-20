@@ -5,29 +5,29 @@ import javax.validation.constraints.NotEmpty
 
 @Entity
 @Table(name = "phone")
-class Phone (
+data class Phone (
         @Id
         @GeneratedValue(strategy = GenerationType.AUTO)
-        private var id: Int,
+        val id: Int,
 
         @NotEmpty
         @Column(name = "type")
         //1 = home phone, 2 = mobile phone
-        private var type: String,
+        val type: String,
 
         @NotEmpty
         @Column(name = "country_code")
-        private var countryCode: String,
+        val countryCode: String,
 
         @NotEmpty
         @Column(name = "number")
-        private var number: String,
+        val number: String,
 
         @NotEmpty
         @Column(name = "area_code")
-        private var areaCode: String,
+        val areaCode: String,
 
         @ManyToOne(fetch = FetchType.EAGER)
         @JoinColumn(name = "id_client")
-        var client: Client
+        val client: Client
     )

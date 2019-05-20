@@ -1,40 +1,42 @@
 package com.gateway.pagamentos.gateway.entity
 
+import io.swagger.annotations.ApiModelProperty
 import javax.persistence.*
 import javax.validation.constraints.NotEmpty
 import javax.validation.constraints.NotNull
 
 @Entity
-class Address (
+data class Address (
         @Id
         @GeneratedValue(strategy = GenerationType.AUTO)
-        private var id: Int,
+        @ApiModelProperty(notes = "Unique identifier of the Address", example = "1", required = true)
+        val id: Int,
 
         @NotEmpty
         @Column(name = "line_1")
-        private var line1: String,
+        val line1: String,
 
         @Column(name = "line_2")
-        private var line2: String,
+        val line2: String,
 
         @NotNull
         @Column(name = "zip_code")
-        private var zipCode: Int,
+        val zipCode: Int,
 
         @NotEmpty
         @Column(name = "city")
-        private var city: String,
+        val city: String,
 
         @NotEmpty
         @Column(name = "state")
-        private var state: String,
+        val state: String,
 
         @NotEmpty
         @Column(name = "country")
-        private var country: String,
+        val country: String,
 
         @ManyToOne(fetch = FetchType.EAGER)
         @JoinColumn(name = "id_client")
-        var client: Client
+        val client: Client
 
     )
