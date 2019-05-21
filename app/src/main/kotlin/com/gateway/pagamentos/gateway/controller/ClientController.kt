@@ -8,6 +8,7 @@ import io.swagger.annotations.ApiOperation
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import javax.websocket.server.PathParam
 
 @RestController
 @RequestMapping("/client")
@@ -26,6 +27,16 @@ class ClientController {
         var randomClient = RandomClient()
 
         return randomClient.getAll(qtde)
+    }
+
+    @ApiOperation(
+            value = "Get Client by id",
+            response = Client::class
+    )
+
+    @GetMapping("/{id}", produces = arrayOf("application/json"))
+    fun getOne(@PathVariable("id") id: Int) : Client{
+        return RandomClient().getById(id)
     }
 
     @ApiOperation(
