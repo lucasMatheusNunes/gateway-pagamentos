@@ -18,7 +18,7 @@ data class Payment (
 
         @field:NotEmpty(message = "payment_method is required")
         @Column(name = "payment_method")
-        @ApiModelProperty(notes = "Payment Method", example = "credit_card, voucher, ticket", required = true)
+        @ApiModelProperty(notes = "Payment Method: credit_card, voucher, ticket", example = "credit_card", required = true)
         val paymentMethod: String?,
 
         /*@OneToOne
@@ -28,7 +28,7 @@ data class Payment (
 
         @field:NotNull(message = "amount is required")
         @Column(name = "amount")
-        @ApiModelProperty(notes = "Amount of Payment", example = "1.99", required = true)
+        @ApiModelProperty(notes = "amount of payment in cents", example = "1.99", required = true)
         val amount: Double?,
 
         /*@NotEmpty
