@@ -1,12 +1,13 @@
 package com.gateway.pagamentos.gateway.entity
 
+import io.swagger.annotations.ApiModel
 import io.swagger.annotations.ApiModelProperty
-import javax.persistence.Column
-import javax.persistence.GeneratedValue
-import javax.persistence.GenerationType
-import javax.persistence.Id
+import javax.persistence.*
 import javax.validation.constraints.NotEmpty
 
+@Entity
+@Table(name="payment")
+@ApiModel(description = "Class representing a payment")
 data class Payment (
 
         @Id
@@ -19,15 +20,19 @@ data class Payment (
         @ApiModelProperty(notes = "Payment Method", example = "credit_card, voucher, ticket", required = true)
         val paymentMethod: String,
 
+        /*@OneToOne
+        @ApiModelProperty(notes = "Credit Card of Payment", example = "credit object", required = true)
+        val creditCard: CreditCard,*/
+
         @NotEmpty
         @Column(name = "amount")
         @ApiModelProperty(notes = "Amount of Payment", example = "1.99", required = true)
         val amount: Double,
 
-        @NotEmpty
+        /*@NotEmpty
         @Column(name = "metadata")
         @ApiModelProperty(notes = "Metadata of Payment", example = "{\"description\":\"coffee\"}", required = true)
-        val metadata: Map<String, String>,
+        val metadata: Map<String, String>,*/
 
         @NotEmpty
         @Column(name = "token")
