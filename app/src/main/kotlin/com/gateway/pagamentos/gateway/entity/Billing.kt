@@ -15,14 +15,18 @@ class Billing(
         private val id: Int,
 
         @Column
-        private val name: String,
+        val name: String,
 
         @Column
-        private val address: String, //Address
+        val address: String//, //Address
+
+       /*
 
         @OneToOne
+        @JoinColumn(name = "transaction_id")
         val transaction: Transaction
 
+        */
 
 )
 {
