@@ -7,7 +7,9 @@ import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.validation.BindingResult
 import org.springframework.web.bind.annotation.*
+import javax.validation.Valid
 
 @RestController
 @RequestMapping("/payment")
@@ -32,8 +34,8 @@ class PaymentController {
             response = SuccessCallback::class
     )
 
-    @PostMapping(produces = arrayOf("application/json"))
-    fun add(@RequestBody payment: Payment): ResponseEntity<SuccessCallback>{
+    @PostMapping(consumes = arrayOf("application/json"), produces = arrayOf("application/json"))
+    fun add(@Valid @RequestBody payment: Payment): ResponseEntity<SuccessCallback>{
 
         return ResponseEntity(SuccessCallback("payment_created","Payment created with successful",payment.id), HttpStatus.CREATED)
     }
