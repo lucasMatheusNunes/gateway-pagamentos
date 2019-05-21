@@ -1,28 +1,27 @@
 package com.gateway.pagamentos.gateway.dataRandom
 
-import com.gateway.pagamentos.gateway.entity.Client
+import com.gateway.pagamentos.gateway.entity.Merchant
 import io.codearte.jfairy.Fairy
 
-class RandomClient {
+class RandomMerchant {
 
-    fun getAll(qtde : Long) : ArrayList<Client> {
+    private val dataRandomPerson : Fairy = Fairy.create()
 
-        val listClients = ArrayList<Client>()
+    fun getAll(qtde : Long) : ArrayList<Merchant> {
+
+        val listMerchants = ArrayList<Merchant>()
         var numberOfRegisters : Int = if(qtde > 0) qtde.toInt() else 5
 
         for (x in 1..numberOfRegisters) {
-            listClients.add(getById(x))
+            listMerchants.add(getById(x))
         }
 
-        return listClients
+        return listMerchants
     }
 
-    fun getById(id : Int) : Client {
-        val fairy : Fairy = Fairy.create()
+    fun getById(id : Int) : Merchant {
 
-        val dataRandomPerson : Fairy = fairy
-
-        val clientDat = Client(id,
+        val merchantData = Merchant(id,
                 dataRandomPerson.person().fullName,
                 dataRandomPerson.person().email,
                 dataRandomPerson.person().address.addressLine1,
@@ -41,8 +40,17 @@ class RandomClient {
                 dataRandomPerson.baseProducer().randomInt(4),
                 dataRandomPerson.baseProducer().randomInt(99),
                 dataRandomPerson.person().telephoneNumber,
-                dataRandomPerson.baseProducer().randomInt(99))
+                dataRandomPerson.baseProducer().randomInt(99),
+                dataRandomPerson.textProducer().randomString(50))
 
-        return clientDat
+        return merchantData
+    }
+
+    fun getRandomToken() : String {
+        return dataRandomPerson.textProducer().randomString(50)
+    }
+
+    fun getRandomInt() : Int {
+        return dataRandomPerson.baseProducer().randomInt(10000)
     }
 }

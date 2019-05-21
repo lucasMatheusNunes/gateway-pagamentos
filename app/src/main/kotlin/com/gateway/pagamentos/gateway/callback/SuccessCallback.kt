@@ -12,5 +12,8 @@ class SuccessCallback (
         val message : String,
 
         @ApiModelProperty(notes = "Unique identifier of the entity in question", example = "8")
-        val id : Int
+        val id : Int,
+
+        @ApiModelProperty(notes = "Token for validation of client")
+        val token: String? = null
 )

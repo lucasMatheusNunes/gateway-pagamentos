@@ -10,22 +10,22 @@ import javax.validation.constraints.NotEmpty
 import javax.validation.constraints.NotNull
 
 @Entity
-@Table(name="client")
-@ApiModel(description = "Class representing a client that receive payments")
-data class Client (
+@Table(name="merchant")
+@ApiModel(description = "Class representing a merchant that receive payments")
+data class Merchant (
 
         @Id
         @GeneratedValue(strategy = GenerationType.AUTO)
-        @ApiModelProperty(notes = "Unique identifier of the client", example = "1", required = true)
+        @ApiModelProperty(notes = "Unique identifier of the merchant", example = "1", required = true)
         val id: Int,
 
         @NotEmpty
         @Column(name = "real_name")
-        @ApiModelProperty(notes = "Name of client", example = "John Mabell Rynyone", required = true)
+        @ApiModelProperty(notes = "Name of merchant", example = "John Mabell Rynyone", required = true)
         var realName: String,
 
         @Email
-        @ApiModelProperty(notes = "Email of client", example = "sample@mail.com", allowEmptyValue = true)
+        @ApiModelProperty(notes = "Email of merchant", example = "sample@mail.com", allowEmptyValue = true)
         val email: String = "",
 
         @NotEmpty
@@ -110,6 +110,9 @@ data class Client (
         @NotEmpty
         @Column(name = "phone_area_code")
         @ApiModelProperty(notes = "Area code", example = "47", required = true)
-        val phoneAreaCode: Int
+        val phoneAreaCode: Int,
 
+        @Column(name = "token")
+        @ApiModelProperty(notes = "Token of client for using in requests")
+        val token : String = ""
     )
