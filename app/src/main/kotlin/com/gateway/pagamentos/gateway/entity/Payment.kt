@@ -21,23 +21,37 @@ data class Payment (
         @ApiModelProperty(notes = "Payment Method: credit_card, voucher, ticket", example = "credit_card", required = true)
         val paymentMethod: String?,
 
-        /*@OneToOne
-        @JoinColumn(name = "credit_card_id")
-        @ApiModelProperty(notes = "Credit Card of Payment", example = "credit object", required = true)
-        val creditCard: CreditCard,*/
+        @Column(name = "credit_card_id")
+        @ApiModelProperty(notes = "Credit Card of Payment", example = "1", required = true)
+        val creditCardId: Int?,
+
+        @field:NotNull(message = "mechant is required")
+        @Column(name = "merchant_id")
+        @ApiModelProperty(notes = "Merchant of Payment", example = "1", required = true)
+        val merchantId: Int?,
+
+        @field:NotNull(message = "client is required")
+        @Column(name = "client_id")
+        @ApiModelProperty(notes = "Client of Payment", example = "1", required = true)
+        val clientId: Int?,
 
         @field:NotNull(message = "amount is required")
         @Column(name = "amount")
         @ApiModelProperty(notes = "amount of payment in cents", example = "1.99", required = true)
         val amount: Double?,
 
-        /*@NotEmpty
+        @field:NotEmpty
         @Column(name = "metadata")
-        @ApiModelProperty(notes = "Metadata of Payment", example = "{\"description\":\"coffee\"}", required = true)
-        val metadata: Map<String, String>,*/
+        @ApiModelProperty(notes = "Metadata of Payment", example = "coffee", required = true)
+        val metadata: String?,
 
         @field:NotEmpty(message = "token is required")
         @Column(name = "token")
         @ApiModelProperty(notes = "Token of client", example = "jhl254359ykjhfs876543kjwt8734", required = true)
-        val token: String?
+        val token: String?,
+
+        @field:NotNull(message = "installments is required")
+        @Column(name = "installments")
+        @ApiModelProperty(notes = "installments of payment", example = "1", required = true)
+        val installments: Int?
 )
