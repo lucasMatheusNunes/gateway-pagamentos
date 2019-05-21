@@ -18,19 +18,6 @@ import javax.validation.Valid
 class PaymentController {
 
     @ApiOperation(
-            value = "Get list of Payment",
-            response = Payment::class
-    )
-
-    @RequestMapping(method = arrayOf(RequestMethod.GET), produces = arrayOf("application/json"))
-    fun getAll() : Payment {
-
-        val readWriteMap = hashMapOf("description" to "coffee");
-
-        return Payment(0, "credit_card", /*CreditCard(0,"JOSE SILVA","1234567890987","JOSE SILVA","10188607030", "1558448525", 187),*/ 1.99, /*HashMap(readWriteMap),*/"jhl254359ykjhfs876543kjwt8734")
-    }
-
-    @ApiOperation(
             value = "Add a new payment",
             response = SuccessCallback::class
     )

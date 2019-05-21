@@ -1,5 +1,6 @@
 package com.gateway.pagamentos.gateway.entity
 
+import com.fasterxml.jackson.annotation.JsonFormat
 import io.swagger.annotations.ApiModel
 import io.swagger.annotations.ApiModelProperty
 import javax.persistence.*
@@ -39,8 +40,9 @@ data class CreditCard (
         val holderDocument: String,
 
         @NotEmpty
+        @JsonFormat(pattern="dd/MM/yyyy HH:mm")
         @Column(name = "expiration_date")
-        @ApiModelProperty(notes = "expiration date (unix timestamp) of the credit card", example = "1558448525", required = true)
+        @ApiModelProperty(notes = "expiration date (unix timestamp) of the credit card", example = "dd/MM/yyyy HH:mm", required = true)
         val expirationDate: String,
 
         @NotEmpty
