@@ -155,7 +155,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore
             "Required with antifraud enabled.", required = true)
     val items: String,
 
-
     @Column
     @ApiModelProperty(notes = "JSON object for you to receive the data of your platform, " +
             "such as: order id, product / service description, etc.", required = true)
