@@ -1,6 +1,5 @@
 package com.gateway.pagamentos.gateway.controller
 
-import com.gateway.pagamentos.gateway.dataRandom.RandomMerchant
 
 import com.gateway.pagamentos.gateway.entity.Transaction
 import com.gateway.pagamentos.gateway.entity.Billing
@@ -19,6 +18,11 @@ import javax.validation.Valid
 @Api(description = "REST Api related to transaction entity")
 class TransactionController {
 
+
+    val billing = Billing ( 1, "name", "address object" );
+    val shipping = Shipping ( 1 , "entidade de cobrança", 1 , "2019-05-30", true , "Address Object"   );
+
+
     @ApiOperation(
             value = "Get transaction entity",
             response = Transaction::class
@@ -26,8 +30,6 @@ class TransactionController {
     @GetMapping("/{id}", produces = arrayOf("application/json"))
     fun getTransactionById(@PathVariable(value = "id") transactionId: Int): ResponseEntity<Transaction> {
 
-        val billing = Billing ( 1, "name", "address object" );
-        val shipping = Shipping ( 1 , "entidade de cobrança", 1 , "2019-05-30", true , "Address Object"   );
 
          val transaction = Transaction(
                 transactionId ,
@@ -54,6 +56,7 @@ class TransactionController {
 
     }
 
+    /*
     @ApiOperation(
             value = "Get transaction list ",
             response = Transaction::class
@@ -72,14 +75,10 @@ class TransactionController {
                            @RequestParam(value = "amount", defaultValue = "", required = false) amount: Int?,
                            @RequestParam(value = "card_holder_name", defaultValue = "", required = false) card_holder_name: String?,
                            @RequestParam(value = "card_last_digits", defaultValue = "", required = false) card_last_digits: Int?,
-                           @RequestParam(value = "card_brand", defaultValue = "", required = false) card_brand: String): ResponseEntity<List<Transaction>> {
+                           @RequestParam(value = "card_brand", defaultValue = "", required = false) card_brand: String): ResponseEntity<null> {
 
+        return ResponseEntity.ok().body(null)
+        */
 
-        var transactionsList =  RandomTransaction().getAll()
-
-
-
-        return ResponseEntity.ok().body(transactionsList)
-    }
 
 }
