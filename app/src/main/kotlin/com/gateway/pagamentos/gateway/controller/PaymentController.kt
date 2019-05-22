@@ -35,7 +35,7 @@ class PaymentController {
     )
     @GetMapping("/{id}", produces = arrayOf("application/json"))
     fun getOne(@PathVariable("id") id: Int) : Payment{
-        return Payment(1,
+        return Payment(id,
                 "credit_card",
                 1,
                 1,

@@ -1,6 +1,7 @@
 package com.gateway.pagamentos.gateway.controller
 
 import com.gateway.pagamentos.gateway.callback.SuccessCallback
+import com.gateway.pagamentos.gateway.dataRandom.GenericRandom
 import com.gateway.pagamentos.gateway.entity.CreditCard
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
@@ -14,13 +15,15 @@ import javax.validation.Valid
 @Api(description = "REST Api related to Credit Card entity")
 class CreditCardController {
 
+    private var genericRandom : GenericRandom = GenericRandom()
+
     @ApiOperation(
             value = "Get Credit Card by id",
             response = CreditCard::class
     )
     @GetMapping("/{id}", produces = arrayOf("application/json"))
     fun getOne(@PathVariable("id") id: Int) : CreditCard{
-        return CreditCard(1,
+        return CreditCard(id,
                 1,
                 "JOSE SILVA",
                 "12341234",
@@ -38,6 +41,6 @@ class CreditCardController {
     @PostMapping(consumes = arrayOf("application/json"), produces = arrayOf("application/json"))
     fun add(@Valid @RequestBody creditCard: CreditCard): ResponseEntity<SuccessCallback> {
 
-        return ResponseEntity(SuccessCallback("credit_card_created","Credit Card created with successful",creditCard.id), HttpStatus.CREATED)
+        return ResponseEntity(SuccessCallback("credit_card_created","Credit Card created with successful",genericRandom.getRandomInt()), HttpStatus.CREATED)
     }
 }

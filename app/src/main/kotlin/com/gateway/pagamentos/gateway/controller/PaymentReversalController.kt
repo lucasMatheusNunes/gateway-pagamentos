@@ -1,25 +1,52 @@
 package com.gateway.pagamentos.gateway.controller
 
 import com.gateway.pagamentos.gateway.callback.SuccessCallback
+import com.gateway.pagamentos.gateway.dataRandom.GenericRandom
+import com.gateway.pagamentos.gateway.dataRandom.PaymentReversalRandom
 import com.gateway.pagamentos.gateway.entity.PaymentReversal
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import javax.validation.Valid
 
 @RestController
 @RequestMapping("/payment-reversal")
 @Api(description = "REST api related to Payment reversal")
 class PaymentReversalController {
 
+    private var paymentReversalRandom : PaymentReversalRandom = PaymentReversalRandom()
+    private var genericRandom : GenericRandom = GenericRandom()
+
     @ApiOperation(
-            value = "Reverse payment"
+            value = "Get list of Payments reversal",
+            response = PaymentReversal::class
+    )
+
+    @GetMapping(produces = arrayOf("application/json"))
+    fun getAll(@RequestParam("qtde", defaultValue = "0") qtde: Long, @RequestHeader("token") token : String) : ArrayList<PaymentReversal> {
+        return paymentReversalRandom.getAll(qtde)
+    }
+
+    @ApiOperation(
+            value = "Get Payment reversal by id",
+            response = PaymentReversal::class
+    )
+
+    @GetMapping("/{id}", produces = arrayOf("application/json"))
+    fun getOne(@PathVariable("id") id : Int) : PaymentReversal {
+        return paymentReversalRandom.getById(id)
+    }
+
+    @ApiOperation(
+            value = "Reverse payment",
+            response = SuccessCallback::class
     )
     @PostMapping(produces = arrayOf("application/json"))
-    fun add(@RequestBody merchant : PaymentReversal) : ResponseEntity<SuccessCallback> {
+    fun add(@Valid @RequestBody paymentReversal : PaymentReversal) : ResponseEntity<SuccessCallback> {
 
-        return ResponseEntity(SuccessCallback("canceled_payment", "Payment canceled with success", 6), HttpStatus.OK)
+        return ResponseEntity(SuccessCallback("canceled_payment", "Payment canceled with success", genericRandom.getRandomInt()), HttpStatus.OK)
     }
 
 }

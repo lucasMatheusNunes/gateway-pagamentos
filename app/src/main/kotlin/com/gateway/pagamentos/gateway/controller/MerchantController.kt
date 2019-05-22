@@ -1,7 +1,8 @@
 package com.gateway.pagamentos.gateway.controller
 
 import com.gateway.pagamentos.gateway.callback.SuccessCallback
-import com.gateway.pagamentos.gateway.dataRandom.RandomMerchant
+import com.gateway.pagamentos.gateway.dataRandom.GenericRandom
+import com.gateway.pagamentos.gateway.dataRandom.MerchantRandom
 import com.gateway.pagamentos.gateway.entity.Merchant
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
@@ -15,7 +16,8 @@ import javax.validation.Valid
 @Api(description = "REST Api related to Merchant entity")
 class MerchantController {
 
-    private var randomMerchant : RandomMerchant = RandomMerchant()
+    private var merchantRandom : MerchantRandom = MerchantRandom()
+    private var genericRandom : GenericRandom = GenericRandom()
 
     @ApiOperation(
             value = "Get list of Merchants",
@@ -23,7 +25,7 @@ class MerchantController {
     )
     @GetMapping(produces = arrayOf("application/json"))
     fun getAll(@RequestParam("qtde", defaultValue = "0") qtde: Long) : ArrayList<Merchant> {
-        return randomMerchant.getAll(qtde)
+        return merchantRandom.getAll(qtde)
     }
 
     @ApiOperation(
@@ -32,7 +34,7 @@ class MerchantController {
     )
     @GetMapping("/{id}", produces = arrayOf("application/json"))
     fun getOne(@PathVariable("id") id: Int) : Merchant{
-        return randomMerchant.getById(id)
+        return merchantRandom.getById(id)
     }
 
     @ApiOperation(
@@ -41,6 +43,6 @@ class MerchantController {
     )
     @PostMapping(produces = arrayOf("application/json"))
     fun add(@Valid @RequestBody merchant: Merchant) : ResponseEntity<SuccessCallback>{
-        return ResponseEntity(SuccessCallback("client_created","Merchant created with successful",randomMerchant.getRandomInt(), randomMerchant.getRandomToken()), HttpStatus.CREATED)
+        return ResponseEntity(SuccessCallback("client_created","Merchant created with successful",genericRandom.getRandomInt(), genericRandom.getRandomToken()), HttpStatus.CREATED)
     }
 }

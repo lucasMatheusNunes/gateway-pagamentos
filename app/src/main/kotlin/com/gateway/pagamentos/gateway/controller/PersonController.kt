@@ -3,7 +3,8 @@ package com.gateway.pagamentos.gateway.controller
 import com.gateway.pagamentos.gateway.entity.Person
 
 import com.gateway.pagamentos.gateway.callback.SuccessCallback
-import com.gateway.pagamentos.gateway.dataRandom.RandomPerson
+import com.gateway.pagamentos.gateway.dataRandom.GenericRandom
+import com.gateway.pagamentos.gateway.dataRandom.PersonRandom
 
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
@@ -19,7 +20,8 @@ import javax.validation.Valid
 @Api(description = "REST Api related to person entity")
 class PersonController {
 
-    private var randomPerson : RandomPerson = RandomPerson()
+    private var personRandom : PersonRandom = PersonRandom()
+    private var genericRandom : GenericRandom = GenericRandom()
 
     @ApiOperation(
         value = "Post person entity",
@@ -29,14 +31,14 @@ class PersonController {
      @PostMapping(consumes = arrayOf("application/json"), produces = arrayOf("application/json"))
      fun add(@Valid @RequestBody person: Person): ResponseEntity<SuccessCallback>{
 
-        return ResponseEntity(SuccessCallback("person_created","Person created with successful",person.id), HttpStatus.CREATED)
+        return ResponseEntity(SuccessCallback("person_created","Person created with successful", genericRandom.getRandomInt()), HttpStatus.CREATED)
      }
 
      @GetMapping(produces = arrayOf("application/json"))
      fun getAll() : ArrayList<Person> {
 
         var qtde = 5
-        return randomPerson.getAll(qtde)
+        return personRandom.getAll(qtde)
      }
 
     @ApiOperation(
@@ -46,7 +48,7 @@ class PersonController {
 
     @GetMapping("/{id}", produces = arrayOf("application/json"))
     fun getOne(@PathVariable("id") id: Int) : Person{
-        return randomPerson.getById(id)
+        return personRandom.getById(id)
     }
 
 

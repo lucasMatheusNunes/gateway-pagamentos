@@ -1,27 +1,27 @@
 package com.gateway.pagamentos.gateway.dataRandom
 
-import com.gateway.pagamentos.gateway.entity.Person
+import com.gateway.pagamentos.gateway.entity.Merchant
 import io.codearte.jfairy.Fairy
 
-class  RandomPerson {
+class MerchantRandom {
 
     private val dataRandomPerson : Fairy = Fairy.create()
 
-    fun getAll(qtde : Int) : ArrayList<Person> {
+    fun getAll(qtde : Long) : ArrayList<Merchant> {
 
-        val listPersons = ArrayList<Person>()
+        val listMerchants = ArrayList<Merchant>()
         var numberOfRegisters : Int = if(qtde > 0) qtde.toInt() else 5
 
         for (x in 1..numberOfRegisters) {
-            listPersons.add(getById(x))
+            listMerchants.add(getById(x))
         }
 
-        return listPersons
+        return listMerchants
     }
 
-    fun getById(id : Int) : Person {
+    fun getById(id : Int) : Merchant {
 
-        val personData = Person(id,
+        val merchantData = Merchant(id,
                 dataRandomPerson.person().fullName,
                 dataRandomPerson.person().email,
                 dataRandomPerson.person().address.addressLine1,
@@ -30,13 +30,21 @@ class  RandomPerson {
                 dataRandomPerson.person().address.city,
                 "EX",
                 "US",
+                dataRandomPerson.baseProducer().randomInt(999).toString(),
+                dataRandomPerson.baseProducer().randomInt(99999).toString(),
+                dataRandomPerson.baseProducer().randomInt(9),
+                dataRandomPerson.baseProducer().randomInt(99999).toString(),
+                dataRandomPerson.baseProducer().randomInt(9),
                 dataRandomPerson.baseProducer().randomInt(2),
                 dataRandomPerson.person().passportNumber,
-                dataRandomPerson.baseProducer().randomInt(99),
+                dataRandomPerson.baseProducer().randomInt(4),
+                dataRandomPerson.baseProducer().randomInt(99).toString(),
                 dataRandomPerson.person().telephoneNumber,
-                dataRandomPerson.baseProducer().randomInt(99))
+                dataRandomPerson.baseProducer().randomInt(99),
+                ""
+        )
 
-        return personData
+        return merchantData
     }
 
     fun getRandomToken() : String {
