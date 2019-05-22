@@ -38,18 +38,13 @@ data class Payment (
 
         @field:NotNull(message = "amount is required")
         @Column(name = "amount")
-        @ApiModelProperty(notes = "amount of payment in cents", example = "1.99", required = true)
-        val amount: Double?,
+        @ApiModelProperty(notes = "amount of payment in cents", example = "199", required = true)
+        val amount: Int?,
 
         @field:NotEmpty
         @Column(name = "metadata")
         @ApiModelProperty(notes = "Metadata of Payment", example = "coffee", required = true)
         val metadata: String?,
-
-        @field:NotEmpty(message = "token is required")
-        @Column(name = "token")
-        @ApiModelProperty(notes = "Token of client", example = "jhl254359ykjhfs876543kjwt8734", required = true)
-        val token: String?,
 
         @field:NotNull(message = "installments is required")
         @Column(name = "installments")

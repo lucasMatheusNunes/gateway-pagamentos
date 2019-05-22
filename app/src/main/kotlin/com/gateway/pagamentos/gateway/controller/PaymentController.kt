@@ -40,9 +40,8 @@ class PaymentController {
                 1,
                 1,
                 1,
-                1.99,
+                199,
                 "coffe",
-                "jhl254359ykjhfs876543kjwt8734",
                 1)
     }
 
@@ -70,9 +69,8 @@ class PaymentController {
                 1,
                 1,
                 1,
-                1.99,
+                199,
                 "coffe",
-                "jhl254359ykjhfs876543kjwt8734",
                 1);
         listPayment.add(paymentOne);
 
@@ -81,9 +79,8 @@ class PaymentController {
                 1,
                 1,
                 1,
-                1.99,
+                199,
                 "coffe",
-                "jhl254359ykjhfs876543kjwt8734",
                 1);
         listPayment.add(paymentTwo);
 
