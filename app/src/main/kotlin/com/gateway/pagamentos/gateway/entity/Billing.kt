@@ -1,10 +1,7 @@
 package com.gateway.pagamentos.gateway.entity
 
 
-import org.jetbrains.annotations.NotNull
 import javax.persistence.*
-import javax.validation.constraints.Size
-
 
 @Entity
 @Table(name = "billing")
