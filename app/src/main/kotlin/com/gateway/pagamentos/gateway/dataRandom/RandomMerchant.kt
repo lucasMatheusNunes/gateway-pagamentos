@@ -41,7 +41,8 @@ class RandomMerchant {
                 dataRandomPerson.baseProducer().randomInt(99).toString(),
                 dataRandomPerson.person().telephoneNumber,
                 dataRandomPerson.baseProducer().randomInt(99),
-                dataRandomPerson.textProducer().randomString(50))
+                ""
+        )
 
         return merchantData
     }
