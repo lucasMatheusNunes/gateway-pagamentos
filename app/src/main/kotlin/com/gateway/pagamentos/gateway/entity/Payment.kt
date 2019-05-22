@@ -21,6 +21,7 @@ data class Payment (
         @ApiModelProperty(notes = "Payment Method: credit_card, voucher, ticket", example = "credit_card", required = true)
         val paymentMethod: String?,
 
+        @field:NotNull(message = "credit_card_id is required")
         @Column(name = "credit_card_id")
         @ApiModelProperty(notes = "Credit Card of Payment", example = "1", required = true)
         val creditCardId: Int?,
