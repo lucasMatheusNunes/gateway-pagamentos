@@ -19,15 +19,6 @@ class Billing(
 
         @Column
         val address: String//, //Address
-
-       /*
-
-        @OneToOne
-        @JoinColumn(name = "transaction_id")
-        val transaction: Transaction
-
-        */
-
 )
 {
 
