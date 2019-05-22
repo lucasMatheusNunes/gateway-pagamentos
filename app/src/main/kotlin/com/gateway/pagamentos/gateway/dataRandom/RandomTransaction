@@ -1,0 +1,33 @@
+package com.gateway.pagamentos.gateway.dataRandom
+
+import com.gateway.pagamentos.gateway.entity.Transaction
+import io.codearte.jfairy.Fairy
+
+class RandomTransaction {
+
+    var fairy : Fairy = Fairy.create()
+
+    fun getAll(qtde : Long) : ArrayList<Transaction> {
+
+        val listTransaction = ArrayList<Transaction>()
+        var numberOfRegisters : Int = if(qtde > 0) qtde.toInt() else 5
+
+        for (x in 1..numberOfRegisters) {
+            listTransaction.add(getById(x))
+        }
+
+        return listTransaction
+    }
+
+
+    fun getById(id : Int) : Transaction {
+        var fairy : Fairy = Fairy.create()
+        var transaction: Transaction = fairy.transaction(id);
+
+
+        return transaction
+    }
+
+
+
+}
