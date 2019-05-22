@@ -18,6 +18,11 @@ data class CreditCard (
         @ApiModelProperty(notes = "Unique identifier of the credit card", example = "1", required = true)
         val id: Int,
 
+        @field:NotNull(message = "client is required")
+        @Column(name = "client_id")
+        @ApiModelProperty(notes = "Client of Credit Card", example = "1", required = true)
+        val clientId: Int?,
+
         @field:NotEmpty
         @Size(max = 13)
         @Column(name = "statement_descriptor")
