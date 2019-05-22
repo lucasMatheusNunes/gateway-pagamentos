@@ -30,14 +30,29 @@ class PaymentController {
     }
 
     @ApiOperation(
+            value = "Get Payment by id",
+            response = Payment::class
+    )
+    @GetMapping("/{id}", produces = arrayOf("application/json"))
+    fun getOne(@PathVariable("id") id: Int) : Payment{
+        return Payment(1,
+                "credit_card",
+                1,
+                1,
+                1,
+                1.99,
+                "coffe",
+                "jhl254359ykjhfs876543kjwt8734",
+                1)
+    }
+
+    @ApiOperation(
             value = "Get payment list ",
             response = Payment::class
     )
-
-
     @GetMapping("/", produces = arrayOf("application/json"))
     @RequestMapping(method = arrayOf(RequestMethod.GET))
-    fun getTransactionList(@RequestParam(value = "page_items", defaultValue = "", required = false) page_items: Int?,
+    fun getAll(@RequestParam(value = "page_items", defaultValue = "", required = false) page_items: Int?,
                            @RequestParam(value = "status", defaultValue = "", required = false) status: String,
                            @RequestParam(value = "initialDateCreate", defaultValue = "", required = false) initialDateCreate: String,
                            @RequestParam(value = "endDateCreate", defaultValue = "", required = false) endDateCreate: String,
