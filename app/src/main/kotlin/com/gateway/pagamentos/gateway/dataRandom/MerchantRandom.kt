@@ -34,7 +34,7 @@ class MerchantRandom {
                 dataRandomPerson.baseProducer().randomInt(99999).toString(),
                 dataRandomPerson.baseProducer().randomInt(9),
                 dataRandomPerson.baseProducer().randomInt(99999).toString(),
-                dataRandomPerson.baseProducer().randomInt(9),
+                dataRandomPerson.baseProducer().randomInt(9).toString(),
                 dataRandomPerson.baseProducer().randomInt(2),
                 dataRandomPerson.person().passportNumber,
                 dataRandomPerson.baseProducer().randomInt(4),
