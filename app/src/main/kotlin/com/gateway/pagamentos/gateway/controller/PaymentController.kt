@@ -1,6 +1,7 @@
 package com.gateway.pagamentos.gateway.controller
 
 import com.gateway.pagamentos.gateway.callback.SuccessCallback
+import com.gateway.pagamentos.gateway.dataRandom.GenericRandom
 import com.gateway.pagamentos.gateway.entity.CreditCard
 import com.gateway.pagamentos.gateway.entity.Payment
 import io.swagger.annotations.Api
@@ -18,6 +19,8 @@ import javax.validation.Valid
 @Api(description = "REST Api related to Payment entity")
 class PaymentController {
 
+    private var genericRandom : GenericRandom = GenericRandom()
+
     @ApiOperation(
             value = "Add a new payment",
             response = SuccessCallback::class
@@ -26,7 +29,7 @@ class PaymentController {
     @PostMapping(consumes = arrayOf("application/json"), produces = arrayOf("application/json"))
     fun add(@Valid @RequestBody payment: Payment): ResponseEntity<SuccessCallback>{
 
-        return ResponseEntity(SuccessCallback("payment_created","Payment created with successful",payment.id), HttpStatus.CREATED)
+        return ResponseEntity(SuccessCallback("payment_created","Payment created with successful",genericRandom.getRandomInt()), HttpStatus.CREATED)
     }
 
     @ApiOperation(
