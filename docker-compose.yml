@@ -20,7 +20,6 @@ services:
       POSTGRES_PASSWORD: postgres
     ports:
     - "5432:5432"
-    restart: always
 
   app:
     build: ./app
@@ -29,6 +28,6 @@ services:
       - ./app:/app
     expose:
       - "8080"
-    command: mvn clean spring-boot:run
+    command: mvn clean install spring-boot:run
     depends_on:
       - postgres
