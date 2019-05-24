@@ -33,8 +33,8 @@ class  PersonRandom {
                 dataRandomPerson.baseProducer().randomInt(2),
                 dataRandomPerson.person().passportNumber,
                 dataRandomPerson.baseProducer().randomInt(99),
-                dataRandomPerson.person().telephoneNumber,
-                dataRandomPerson.baseProducer().randomInt(99))
+                dataRandomPerson.baseProducer().randomInt(99),
+                dataRandomPerson.person().telephoneNumber)
 
         return personData
     }
