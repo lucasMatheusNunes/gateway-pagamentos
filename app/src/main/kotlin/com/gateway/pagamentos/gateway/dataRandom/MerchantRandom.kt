@@ -10,7 +10,7 @@ class MerchantRandom {
     fun getAll(qtde : Long) : ArrayList<Merchant> {
 
         val listMerchants = ArrayList<Merchant>()
-        var numberOfRegisters : Int = if(qtde > 0) qtde.toInt() else 5
+        val numberOfRegisters : Int = if(qtde > 0) qtde.toInt() else 5
 
         for (x in 1..numberOfRegisters) {
             listMerchants.add(getById(x))
@@ -21,7 +21,7 @@ class MerchantRandom {
 
     fun getById(id : Int) : Merchant {
 
-        val merchantData = Merchant(id,
+        return Merchant(id,
                 dataRandomPerson.person().fullName,
                 dataRandomPerson.person().email,
                 dataRandomPerson.person().address.addressLine1,
@@ -41,10 +41,7 @@ class MerchantRandom {
                 dataRandomPerson.baseProducer().randomInt(99).toString(),
                 dataRandomPerson.person().telephoneNumber,
                 dataRandomPerson.baseProducer().randomInt(99),
-                ""
-        )
-
-        return merchantData
+                "")
     }
 
     fun getRandomToken() : String {
