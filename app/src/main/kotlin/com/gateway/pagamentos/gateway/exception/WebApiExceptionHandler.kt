@@ -1,5 +1,6 @@
 package com.gateway.pagamentos.gateway.exception
 
+import com.gateway.pagamentos.gateway.callback.RequiredFieldCallback
 import org.springframework.beans.TypeMismatchException
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
@@ -28,10 +29,12 @@ class WebApiExceptionHandler : ResponseEntityExceptionHandler() {
     }
 
     override fun handleMethodArgumentNotValid(ex: MethodArgumentNotValidException, headers: HttpHeaders, status: HttpStatus, request: WebRequest): ResponseEntity<Any> {
-        val errors = mutableListOf<String>()
-        ex.bindingResult.fieldErrors.forEach { errors.add("${it.field}: ${it.defaultMessage}") }
-        ex.bindingResult.globalErrors.forEach { errors.add("${it.objectName}: ${it.defaultMessage}") }
-        val apiError = ApiError(HttpStatus.BAD_REQUEST, "", errors)
+        val errors = ArrayList<RequiredFieldCallback>()
+        ex.bindingResult.fieldErrors.forEach { errors.add(
+            RequiredFieldCallback(it.field, it.defaultMessage)
+        ) }
+        //ex.bindingResult.globalErrors.forEach { errors.add("${it.objectName}: ${it.defaultMessage}") }
+        val apiError = ApiFieldError(HttpStatus.BAD_REQUEST, "", errors)
         return handleExceptionInternal(ex, apiError, headers, apiError.status, request)
     }
 
