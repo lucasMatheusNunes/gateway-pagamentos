@@ -66,7 +66,7 @@ class PaymentControllerTest {
                 .content("{}")
         )
             .andExpect(MockMvcResultMatchers.status().isBadRequest)
-            //.andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+            .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_UTF8))
             .andExpect(jsonPath("$.errors[*].field", containsInAnyOrder("paymentMethod", "creditCardId")))
     }
 }
