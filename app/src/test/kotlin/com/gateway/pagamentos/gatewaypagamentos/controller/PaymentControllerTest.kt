@@ -1,6 +1,7 @@
 package com.gateway.pagamentos.gatewaypagamentos.controller
 
 import com.gateway.pagamentos.gateway.controller.PaymentController
+import org.hamcrest.Matchers.containsInAnyOrder
 import org.hamcrest.core.IsNot
 import org.json.JSONObject
 import org.junit.Before
@@ -13,6 +14,8 @@ import org.springframework.test.context.junit4.SpringRunner
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers.content
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
 import org.springframework.test.web.servlet.setup.MockMvcBuilders
 
 @RunWith(SpringRunner::class)
@@ -32,7 +35,7 @@ class PaymentControllerTest {
 
     @Test
     @Throws(Exception::class)
-    fun addCreditSuccess() {
+    fun addPaymentSuccess() {
         val payment = mapOf(
             "paymentMethod" to "credit_card",
             "creditCardId" to 1,
@@ -56,12 +59,14 @@ class PaymentControllerTest {
 
     @Test
     @Throws(Exception::class)
-    fun addCreditEmpty() {
+    fun addPaymentEmpty() {
         this.mockMvc!!.perform(
             MockMvcRequestBuilders.post("/payment")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{}")
         )
             .andExpect(MockMvcResultMatchers.status().isBadRequest)
+            //.andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+            .andExpect(jsonPath("$.errors[*].field", containsInAnyOrder("paymentMethod", "creditCardId")))
     }
 }
