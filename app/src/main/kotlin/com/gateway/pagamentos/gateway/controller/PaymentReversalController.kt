@@ -23,19 +23,17 @@ class PaymentReversalController {
             value = "Get list of Payments reversal",
             response = PaymentReversal::class
     )
-
     @GetMapping(produces = arrayOf("application/json"))
-    fun getAll(@RequestParam("qtde", defaultValue = "0") qtde: Long, @RequestHeader("token") token : String) : ArrayList<PaymentReversal> {
-        return paymentReversalRandom.getAll(qtde)
+    fun getAll( @RequestHeader("token") token : String) : ArrayList<PaymentReversal> {
+        return paymentReversalRandom.getAll()
     }
 
     @ApiOperation(
             value = "Get Payment reversal by id",
             response = PaymentReversal::class
     )
-
     @GetMapping("/{id}", produces = arrayOf("application/json"))
-    fun getOne(@PathVariable("id") id : Int) : PaymentReversal {
+    fun getOne(@PathVariable("id") id : Int, @RequestHeader("token") token : String) : PaymentReversal {
         return paymentReversalRandom.getById(id)
     }
 
@@ -44,8 +42,7 @@ class PaymentReversalController {
             response = SuccessCallback::class
     )
     @PostMapping(produces = arrayOf("application/json"))
-    fun add(@Valid @RequestBody paymentReversal : PaymentReversal) : ResponseEntity<SuccessCallback> {
-
+    fun add(@Valid @RequestBody paymentReversal : PaymentReversal, @RequestHeader("token") token : String) : ResponseEntity<SuccessCallback> {
         return ResponseEntity(SuccessCallback("canceled_payment", "Payment canceled with success", genericRandom.getRandomInt()), HttpStatus.OK)
     }
 

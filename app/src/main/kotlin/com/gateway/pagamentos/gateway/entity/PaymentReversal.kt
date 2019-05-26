@@ -15,18 +15,17 @@ class PaymentReversal (
         @ApiModelProperty(notes = "Unique identifier of the payment reversal", example = "9")
         val id : Int,
 
+        @field:NotNull(message = "ID of merchant is required!")
         @Column(name = "id_merchant")
         @ApiModelProperty(notes = "Unique identifier reference of merchant", example = "6", required = true)
-        @field:NotNull
-        var idMerchant: Int?,
+        var idMerchant: Int,
 
+        @field:NotNull(message = "ID transaction is required!")
         @Column(name = "id_transaction")
         @ApiModelProperty(notes = "Unique identifier reference of transaction", example = "3", required = true)
-        @field:NotNull
-        var idTransaction : Int?,
+        var idTransaction : Int,
 
         @Column(name = "amount")
         @ApiModelProperty(notes = "Value reversal, this value must be in cents", required = true)
-        @field:NotNull
         var amount : Int?
 )

@@ -30,11 +30,11 @@ class  PersonRandom {
                 dataRandomPerson.person().address.city,
                 "EX",
                 "US",
-                dataRandomPerson.baseProducer().randomInt(2),
+                dataRandomPerson.baseProducer().randomInt(1),
                 dataRandomPerson.person().passportNumber,
                 dataRandomPerson.baseProducer().randomInt(99),
                 dataRandomPerson.baseProducer().randomInt(99),
-                dataRandomPerson.person().telephoneNumber)
+                dataRandomPerson.person().telephoneNumber);
 
         return personData
     }

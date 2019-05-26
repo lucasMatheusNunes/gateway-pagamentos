@@ -24,7 +24,6 @@ class PersonControllerTest {
     @Autowired
     private val personController: PersonController? = PersonController()
 
-
     @Before
     @Throws(Exception::class)
     fun setUp() {
@@ -34,7 +33,7 @@ class PersonControllerTest {
 
     @Test
     @Throws(Exception::class)
-    fun findOneOersonTest() {
+    fun findOnePersonTest() {
         this.mockMvc!!.perform(MockMvcRequestBuilders.get("/person/1"))
             .andExpect(status().isOk)
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
@@ -60,10 +59,10 @@ class PersonControllerTest {
             "city" to "", // String?
             "state" to "", // String?
             "country" to "", // String
-            "documentType" to 1 , // Int
+            "documentType" to 1, // Int
             "document" to "1234567890987",// String
-            "phoneCountryCode" to 55 ,// Int
-            "phoneAreaCode" to 47 , // Int
+            "phoneCountryCode" to 55,// Int
+            "phoneAreaCode" to 47, // Int
             "phoneNumber" to "999552222"// String
         );
         this.mockMvc!!.perform(
@@ -99,7 +98,7 @@ class PersonControllerTest {
                 .content(JSONObject(person).toString())
         )
             .andExpect(status().is4xxClientError())
-            println("Persons tests completed")
+        println("Persons tests completed")
     }
 
 }

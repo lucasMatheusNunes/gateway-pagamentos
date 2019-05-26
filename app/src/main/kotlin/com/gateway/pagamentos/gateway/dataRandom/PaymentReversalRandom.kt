@@ -7,10 +7,10 @@ class PaymentReversalRandom {
 
     private val dataRandomPerson : Fairy = Fairy.create()
 
-    fun getAll(qtde : Long) : ArrayList<PaymentReversal> {
+    fun getAll() : ArrayList<PaymentReversal> {
 
         val listMerchants = ArrayList<PaymentReversal>()
-        var numberOfRegisters : Int = if(qtde > 0) qtde.toInt() else 5
+        var numberOfRegisters : Int =  5
 
         for (x in 1..numberOfRegisters) {
             listMerchants.add(getById(x))
