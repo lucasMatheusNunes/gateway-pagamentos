@@ -31,8 +31,8 @@ services:
       - ./app:/app
     expose:
       - "8080"
-    ### command: mvn clean install spring-boot:run
-    command: mvn test
+    command: mvn clean install spring-boot:run
+    #command: mvn test
     depends_on:
       - postgres
 

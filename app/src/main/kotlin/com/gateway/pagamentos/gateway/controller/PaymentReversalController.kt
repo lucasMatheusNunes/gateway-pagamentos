@@ -9,6 +9,7 @@ import io.swagger.annotations.ApiOperation
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import org.springframework.validation.BindingResult
 import javax.validation.Valid
 
 @RestController
@@ -42,8 +43,12 @@ class PaymentReversalController {
             response = SuccessCallback::class
     )
     @PostMapping(produces = arrayOf("application/json"))
-    fun add(@Valid @RequestBody paymentReversal : PaymentReversal, @RequestHeader("token") token : String) : ResponseEntity<SuccessCallback> {
-        return ResponseEntity(SuccessCallback("canceled_payment", "Payment canceled with success", genericRandom.getRandomInt()), HttpStatus.OK)
+    fun add(@Valid @RequestBody paymentReversal : PaymentReversal, binding : BindingResult, @RequestHeader("token") token : String) : ResponseEntity<Any> {
+        return if(binding.hasErrors()) {
+            ResponseEntity(binding.fieldError, HttpStatus.BAD_REQUEST)
+        }else {
+            ResponseEntity(SuccessCallback("canceled_payment", "Payment canceled with success", genericRandom.getRandomInt()), HttpStatus.OK)
+        }
     }
 
 }

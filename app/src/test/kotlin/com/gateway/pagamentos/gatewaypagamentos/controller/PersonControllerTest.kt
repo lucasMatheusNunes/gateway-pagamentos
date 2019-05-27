@@ -25,9 +25,8 @@ class PersonControllerTest {
     private val personController: PersonController? = PersonController()
 
     @Before
-    @Throws(Exception::class)
     fun setUp() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.initMocks(this)
         this.mockMvc = MockMvcBuilders.standaloneSetup(personController).build()
     }
 
@@ -63,7 +62,7 @@ class PersonControllerTest {
             "document" to "1234567890987",// String
             "phoneCountryCode" to 55,// Int
             "phoneAreaCode" to 47, // Int
-            "phoneNumber" to "999552222"// String
+            "phoneNumber" to "99955-2222"// String
         );
         this.mockMvc!!.perform(
             MockMvcRequestBuilders.post("/person")

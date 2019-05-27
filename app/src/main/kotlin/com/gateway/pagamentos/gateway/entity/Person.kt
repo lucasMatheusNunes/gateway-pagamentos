@@ -5,12 +5,7 @@ import io.swagger.annotations.ApiModel
 import io.swagger.annotations.ApiModelProperty
 import io.swagger.models.auth.In
 import javax.persistence.*
-import javax.validation.constraints.Email
-import javax.validation.constraints.NotEmpty
-import javax.validation.constraints.NotNull
-import javax.validation.constraints.Size
-//import java.util.regex
-//import java.lang.String
+import javax.validation.constraints.*
 
 @Entity
 @Table(name = "person")
@@ -71,17 +66,17 @@ class Person(
     @ApiModelProperty(notes = "Document, this field depends of value the document_type field", example = "98765432109", required = true)
     val document: String?,
 
-    //@field:Pattern(regexp = "([0-9]{2})", message = "Please, insert a valid country code of phone!")
+    @field:Max(99 , message = "Please, insert a valid country code of phone!")
     @Column(name = "phone_country_code")
     @ApiModelProperty(notes = "Country code", example = "55", required = true)
-    val phoneCountryCode: Int?,
+    val phoneCountryCode: Int,
 
-    //@field:Pattern(regexp = "([0-9]{2})", message = "Please, insert a valid area code of phone!")
+    @field:Max (99, message = "Please, insert a valid area code of phone!")
     @Column(name = "phone_area_code")
     @ApiModelProperty(notes = "Area code", example = "47", required = true)
-    val phoneAreaCode: Int?,
+    val phoneAreaCode: Int,
 
-    //@field:Pattern(regexp = "\\s+\\d{5}-\\d{4}", message = "Please, insert a valid phone!")
+    @field:Pattern(regexp = "\\d{5}-\\d{4}", message = "Please, insert a valid phone!")
     @Column(name = "phone_number")
     @ApiModelProperty(notes = "Number", example = "000000000", required = true)
     val phoneNumber: String
