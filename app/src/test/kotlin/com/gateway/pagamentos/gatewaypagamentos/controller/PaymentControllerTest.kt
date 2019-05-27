@@ -17,8 +17,10 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers.print
 import org.springframework.http.HttpStatus
 import com.gateway.pagamentos.gateway.exception.ApiError
+import com.gateway.pagamentos.gateway.exception.ExceptionHandlerAdvice
 import junit.framework.Assert.assertEquals
 import junit.framework.Assert.assertTrue
+import org.hamcrest.CoreMatchers.hasItem
 
 
 @RunWith(SpringRunner::class)
@@ -33,7 +35,9 @@ class PaymentControllerTest {
     @Before
     fun setUp() {
         MockitoAnnotations.initMocks(this);
-        this.mockMvc = MockMvcBuilders.standaloneSetup(paymentController).build()
+        this.mockMvc = MockMvcBuilders.standaloneSetup(paymentController)
+            .setControllerAdvice(ExceptionHandlerAdvice())
+            .build()
     }
 
     @Test
@@ -72,6 +76,12 @@ class PaymentControllerTest {
             .andDo(print())
             .andExpect(MockMvcResultMatchers.status().isBadRequest)
             .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_UTF8))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.status").isNotEmpty)
+            .andExpect(MockMvcResultMatchers.jsonPath("$.errors[*].field", hasItem("paymentMethod")))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.errors[*].field", hasItem("creditCardId")))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.errors[*].field", hasItem("merchantId")))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.errors[*].field", hasItem("clientId")))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.errors[*].field", hasItem("amount")))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.errors[*].field", hasItem("metadata")))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.errors[*].field", hasItem("installments")))
     }
 }

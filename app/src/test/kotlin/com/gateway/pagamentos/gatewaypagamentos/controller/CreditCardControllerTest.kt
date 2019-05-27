@@ -1,6 +1,8 @@
 package com.gateway.pagamentos.gatewaypagamentos.controller
 
 import com.gateway.pagamentos.gateway.controller.CreditCardController
+import com.gateway.pagamentos.gateway.exception.ExceptionHandlerAdvice
+import org.hamcrest.CoreMatchers
 import org.hamcrest.core.IsNot.not
 import org.json.JSONObject
 import org.junit.Before
@@ -12,6 +14,8 @@ import org.springframework.http.MediaType
 import org.springframework.test.context.junit4.SpringRunner
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.content
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
@@ -29,13 +33,16 @@ class CreditCardControllerTest {
     @Before
     fun setUp() {
         MockitoAnnotations.initMocks(this);
-        this.mockMvc = MockMvcBuilders.standaloneSetup(creditCardController).build()
+        this.mockMvc = MockMvcBuilders.standaloneSetup(creditCardController)
+            .setControllerAdvice(ExceptionHandlerAdvice())
+            .build()
     }
 
     @Test
     @Throws(Exception::class)
     fun findOneTest() {
         this.mockMvc!!.perform(MockMvcRequestBuilders.get("/credit_card/1"))
+            .andDo(MockMvcResultHandlers.print())
             .andExpect(status().isOk)
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
     }
@@ -58,6 +65,7 @@ class CreditCardControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JSONObject(credit).toString())
         )
+            .andDo(MockMvcResultHandlers.print())
             .andExpect(status().isCreated)
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
             .andExpect(jsonPath("$.id").isNotEmpty)
@@ -72,7 +80,16 @@ class CreditCardControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{}")
         )
-            .andExpect(status().isBadRequest)
+            .andDo(MockMvcResultHandlers.print())
+            .andExpect(MockMvcResultMatchers.status().isBadRequest)
+            .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_UTF8))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.errors[*].field", CoreMatchers.hasItem("clientId")))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.errors[*].field", CoreMatchers.hasItem("statementDescriptor")))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.errors[*].field", CoreMatchers.hasItem("number")))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.errors[*].field", CoreMatchers.hasItem("holderName")))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.errors[*].field", CoreMatchers.hasItem("holderDocument")))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.errors[*].field", CoreMatchers.hasItem("expirationDate")))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.errors[*].field", CoreMatchers.hasItem("cvv")))
     }
 
     @Test
@@ -93,7 +110,55 @@ class CreditCardControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JSONObject(credit).toString())
         )
+            .andDo(MockMvcResultHandlers.print())
             .andExpect(status().isBadRequest)
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+    }
+
+    @Test
+    @Throws(Exception::class)
+    fun addExpirationMore() {
+        val credit = mapOf(
+            "clientId" to 1,
+            "statementDescriptor" to "JOSE SILVA",
+            "number" to "1234567890987",
+            "holderName" to "JOSE SILVA",
+            "holderDocument" to "10188607030",
+            "expirationDate" to "042020",
+            "cvv" to "187"
+        )
+
+        this.mockMvc!!.perform(
+            MockMvcRequestBuilders.post("/credit_card")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(JSONObject(credit).toString())
+        )
+            .andDo(MockMvcResultHandlers.print())
+            .andExpect(status().isBadRequest)
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+    }
+
+    @Test
+    @Throws(Exception::class)
+    fun addExpirationRegex() {
+        val credit = mapOf(
+            "clientId" to 1,
+            "statementDescriptor" to "JOSE SILVA",
+            "number" to "1234567890987",
+            "holderName" to "JOSE SILVA",
+            "holderDocument" to "10188607030",
+            "expirationDate" to "04/2",
+            "cvv" to "187"
+        )
+
+        this.mockMvc!!.perform(
+            MockMvcRequestBuilders.post("/credit_card")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(JSONObject(credit).toString())
+        )
+            .andDo(MockMvcResultHandlers.print())
+            .andExpect(status().isBadRequest)
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
     }
 
     @Test
@@ -114,6 +179,7 @@ class CreditCardControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JSONObject(credit).toString())
         )
+            .andDo(MockMvcResultHandlers.print())
             .andExpect(status().isBadRequest)
     }
 
@@ -135,7 +201,9 @@ class CreditCardControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JSONObject(credit).toString())
         )
+            .andDo(MockMvcResultHandlers.print())
             .andExpect(status().isBadRequest)
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
     }
 
     @Test
@@ -157,6 +225,8 @@ class CreditCardControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JSONObject(credit).toString())
         )
+            .andDo(MockMvcResultHandlers.print())
             .andExpect(status().isBadRequest)
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
     }
 }

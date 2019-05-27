@@ -1,10 +1,18 @@
 package com.gateway.pagamentos.gateway.entity
 
-import com.fasterxml.jackson.annotation.JsonFormat
 import io.swagger.annotations.ApiModel
 import io.swagger.annotations.ApiModelProperty
-import javax.persistence.*
-import javax.validation.constraints.*
+import javax.persistence.Column
+import javax.persistence.Entity
+import javax.persistence.GeneratedValue
+import javax.persistence.GenerationType
+import javax.persistence.Id
+import javax.persistence.Table
+import javax.validation.constraints.Max
+import javax.validation.constraints.NotEmpty
+import javax.validation.constraints.NotNull
+import javax.validation.constraints.Pattern
+import javax.validation.constraints.Size
 
 @Entity
 @Table(name="credit_card")
@@ -41,7 +49,7 @@ data class CreditCard (
         @ApiModelProperty(notes = "holder document of the credit card", example = "10188607030", required = true)
         val holderDocument: String?,
 
-        @field:NotEmpty
+        @field:[NotEmpty Pattern(regexp="^[0-9]{4}",message="length must be 4")]
         @Column(name = "expiration_date")
         @ApiModelProperty(notes = "expiration date of the credit card", example = "0420", required = true)
         val expirationDate: String?,
