@@ -1,6 +1,7 @@
 package com.gateway.pagamentos.gatewaypagamentos.controller
 
 import com.gateway.pagamentos.gateway.controller.MerchantController
+import org.hamcrest.core.IsNot.not
 import org.json.JSONObject
 import org.junit.Before
 import org.junit.Test
@@ -11,8 +12,10 @@ import org.springframework.http.MediaType
 import org.springframework.test.context.junit4.SpringRunner
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers.print
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.content
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import org.springframework.test.web.servlet.setup.MockMvcBuilders
 
@@ -26,7 +29,8 @@ class MerchantControllerTest {
     @Before
     fun setUp() {
         MockitoAnnotations.initMocks(this)
-        this.mockMvc = MockMvcBuilders.standaloneSetup(merchantController).build()
+        this.mockMvc = MockMvcBuilders.standaloneSetup(merchantController)
+            .build()
     }
 
     @Test
@@ -50,8 +54,8 @@ class MerchantControllerTest {
 
     @Test
     @Throws(Exception::class)
-    fun addTest() {
-        var merchant = mapOf(
+    fun addOnlyRequiredFieldsForSuccessTest() {
+        val merchant = mapOf(
             "realName" to "Jose Silva",
             "addressLine1" to "10, rua tal, bairro tal",
             "state" to "SC",
@@ -78,17 +82,21 @@ class MerchantControllerTest {
         )
             .andExpect(status().isCreated)
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+            .andExpect(jsonPath("$.id", not(0)))
+            .andExpect(jsonPath("$.id").isNotEmpty)
     }
 
     @Test
     @Throws(Exception::class)
-    fun addWithoutRealNameTest() {
-        var merchant = mapOf(
+    fun addAllFieldsForSuccessTest() {
+        val merchant = mapOf(
             "realName" to "Jose Silva",
+            "email" to "email@mail.com",
             "addressLine1" to "10, rua tal, bairro tal",
-            "state" to "SC",
+            "addressLine2" to "Ap. 105, block U",
             "zipCode" to "392839084",
             "city" to "Joinville",
+            "state" to "SC",
             "country" to "BR",
             "documentType" to 1,
             "document" to "01451373000134",
@@ -110,5 +118,51 @@ class MerchantControllerTest {
         )
             .andExpect(status().isCreated)
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+            .andExpect(jsonPath("$.id", not(0)))
+            .andExpect(jsonPath("$.id").isNotEmpty)
+    }
+
+    @Test
+    @Throws(Exception::class)
+    fun addAllFieldsInvalidsTest() {
+        val merchant = mapOf(
+            "realName" to "Jose Silva da Silva da Silva da Silva da Silva da Silva da Silvaa",
+            "email" to "email",
+            "addressLine1" to "rua",
+            "zipCode" to "49291038229692081",
+            "city" to "Joinville de Joinville de Joinville de Joinville de Joinville dew",
+            "state" to "SCS",
+            "country" to "BRS",
+            "documentType" to 6,
+            "document" to "014M51373000134",
+            "phoneCountryCode" to 10930492,
+            "phoneNumber" to "9375E01326",
+            "bankBranchCheckDigit" to 18,
+            "bankAccountType" to 3,
+            "bankAccountCheckDigit" to "18ç",
+            "bankAccountNumber" to 3487354598211,
+            "bankBranchNumber" to "00000",
+            "bankCode" to "394283"
+        )
+
+        this.mockMvc!!.perform(
+            MockMvcRequestBuilders.post("/merchant")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(JSONObject(merchant).toString())
+        )
+            .andExpect(status().isBadRequest)
+    }
+
+    @Test
+    @Throws(Exception::class)
+    fun addEmptyBodyTest() {
+
+        this.mockMvc!!.perform(
+            MockMvcRequestBuilders.post("/merchant")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{}")
+        )
+            .andExpect(status().isBadRequest)
+            .andDo(print())
     }
 }
