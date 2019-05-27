@@ -67,5 +67,4 @@ class PersonController {
         return personRandom.getById(id)
     }
 
-
 }
