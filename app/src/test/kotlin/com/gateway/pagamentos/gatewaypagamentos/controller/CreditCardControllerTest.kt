@@ -1,6 +1,7 @@
 package com.gateway.pagamentos.gatewaypagamentos.controller
 
 import com.gateway.pagamentos.gateway.controller.CreditCardController
+import com.gateway.pagamentos.gateway.exception.WebApiExceptionHandler
 import org.hamcrest.CoreMatchers
 import org.hamcrest.core.IsNot.not
 import org.json.JSONObject
@@ -32,7 +33,9 @@ class CreditCardControllerTest {
     @Before
     fun setUp() {
         MockitoAnnotations.initMocks(this);
-        this.mockMvc = MockMvcBuilders.standaloneSetup(creditCardController).build()
+        this.mockMvc = MockMvcBuilders.standaloneSetup(creditCardController)
+            .setControllerAdvice(WebApiExceptionHandler())
+            .build()
     }
 
     @Test

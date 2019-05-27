@@ -23,12 +23,28 @@ import javax.validation.ConstraintViolationException
 @ControllerAdvice
 class WebApiExceptionHandler : ResponseEntityExceptionHandler() {
 
-    override fun handleHttpMessageNotReadable(ex: HttpMessageNotReadableException, headers: HttpHeaders, status: HttpStatus, request: WebRequest): ResponseEntity<Any> {
+    /*override fun handleHttpMessageNotReadable(ex: HttpMessageNotReadableException, headers: HttpHeaders, status: HttpStatus, request: WebRequest): ResponseEntity<Any> {
         val apiError = ApiError(status, "Something went wrong with your request.", emptyList(), ex.localizedMessage)
         return ResponseEntity(apiError, HttpHeaders(), apiError.status)
+    }*/
+
+    override fun handleMethodArgumentNotValid(
+        ex: MethodArgumentNotValidException,
+        headers: HttpHeaders,
+        status: HttpStatus,
+        request: WebRequest
+    ): ResponseEntity<Any> {
+        val errors = ArrayList<RequiredFieldCallback>()
+        ex.bindingResult.fieldErrors.forEach { errors.add(
+            RequiredFieldCallback(it.field, it.defaultMessage)
+        ) }
+
+        val apiError = ApiFieldError(HttpStatus.BAD_REQUEST, "", errors)
+
+        return ResponseEntity(apiError, HttpStatus.BAD_REQUEST)
     }
 
-    override fun handleMethodArgumentNotValid(ex: MethodArgumentNotValidException, headers: HttpHeaders, status: HttpStatus, request: WebRequest): ResponseEntity<Any> {
+    /*override fun handleMethodArgumentNotValid(ex: MethodArgumentNotValidException, headers: HttpHeaders, status: HttpStatus, request: WebRequest): ResponseEntity<Any> {
         val errors = ArrayList<RequiredFieldCallback>()
         ex.bindingResult.fieldErrors.forEach { errors.add(
             RequiredFieldCallback(it.field, it.defaultMessage)
@@ -36,9 +52,9 @@ class WebApiExceptionHandler : ResponseEntityExceptionHandler() {
         //ex.bindingResult.globalErrors.forEach { errors.add("${it.objectName}: ${it.defaultMessage}") }
         val apiError = ApiFieldError(HttpStatus.BAD_REQUEST, "", errors)
         return handleExceptionInternal(ex, apiError, headers, apiError.status, request)
-    }
+    }*/
 
-    override fun handleBindException(ex: BindException, headers: HttpHeaders, status: HttpStatus, request: WebRequest): ResponseEntity<Any> {
+    /*override fun handleBindException(ex: BindException, headers: HttpHeaders, status: HttpStatus, request: WebRequest): ResponseEntity<Any> {
         val errors = mutableListOf<String>()
         ex.bindingResult.fieldErrors.forEach { errors.add("${it.field}: ${it.defaultMessage}") }
         ex.bindingResult.globalErrors.forEach { errors.add("${it.objectName}: ${it.defaultMessage}") }
@@ -102,6 +118,6 @@ class WebApiExceptionHandler : ResponseEntityExceptionHandler() {
     fun handleAll(ex: Exception, request: WebRequest): ResponseEntity<Any> {
         val apiError = ApiError(HttpStatus.INTERNAL_SERVER_ERROR, ex.localizedMessage, "error occurred")
         return ResponseEntity(apiError, HttpHeaders(), apiError.status)
-    }
+    }*/
 
 }

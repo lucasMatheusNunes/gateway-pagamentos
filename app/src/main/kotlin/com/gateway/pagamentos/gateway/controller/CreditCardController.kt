@@ -43,9 +43,9 @@ class CreditCardController {
             response = SuccessCallback::class
     )
     @PostMapping(consumes = arrayOf("application/json"), produces = arrayOf("application/json"))
-    fun add(@Valid @RequestBody creditCard: CreditCard, binding : BindingResult): ResponseEntity<Any> {
+    fun add(@Valid @RequestBody creditCard: CreditCard): ResponseEntity<Any> {
 
-        return if(binding.hasErrors()) {
+        /*return if(binding.hasErrors()) {
             val errors = ArrayList<RequiredFieldCallback>()
 
             binding.fieldErrors.forEach { errors.add(
@@ -57,7 +57,7 @@ class CreditCardController {
             ResponseEntity(apiError, HttpStatus.BAD_REQUEST)
         }else {
             ResponseEntity(SuccessCallback("credit_card_created","Credit Card created with successful",genericRandom.getRandomInt()), HttpStatus.CREATED)
-        }
-        //return ResponseEntity(SuccessCallback("credit_card_created","Credit Card created with successful",genericRandom.getRandomInt()), HttpStatus.CREATED)
+        }*/
+        return ResponseEntity(SuccessCallback("credit_card_created","Credit Card created with successful",genericRandom.getRandomInt()), HttpStatus.CREATED)
     }
 }
