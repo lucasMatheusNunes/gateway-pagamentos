@@ -1,7 +1,6 @@
 package com.gateway.pagamentos.gatewaypagamentos.controller
 
 import com.gateway.pagamentos.gateway.controller.PaymentController
-import org.hamcrest.Matchers.containsInAnyOrder
 import org.hamcrest.core.IsNot
 import org.json.JSONObject
 import org.junit.Before
@@ -14,9 +13,13 @@ import org.springframework.test.context.junit4.SpringRunner
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers.content
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
 import org.springframework.test.web.servlet.setup.MockMvcBuilders
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers.print
+import org.springframework.http.HttpStatus
+import com.gateway.pagamentos.gateway.exception.ApiError
+import junit.framework.Assert.assertEquals
+import junit.framework.Assert.assertTrue
+
 
 @RunWith(SpringRunner::class)
 class PaymentControllerTest {
@@ -51,6 +54,7 @@ class PaymentControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JSONObject(payment).toString())
         )
+            .andDo(print())
             .andExpect(MockMvcResultMatchers.status().isCreated)
             .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_UTF8))
             .andExpect(MockMvcResultMatchers.jsonPath("$.id").isNotEmpty)
@@ -65,8 +69,9 @@ class PaymentControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{}")
         )
+            .andDo(print())
             .andExpect(MockMvcResultMatchers.status().isBadRequest)
             .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_UTF8))
-            .andExpect(jsonPath("$.errors[*].field", containsInAnyOrder("paymentMethod", "creditCardId")))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.status").isNotEmpty)
     }
 }
