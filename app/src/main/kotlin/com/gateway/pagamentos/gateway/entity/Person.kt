@@ -36,12 +36,10 @@ class Person(
     @ApiModelProperty(notes = "Complement data of address", example = "Ap. 306, block E", allowEmptyValue = false)
     val addressLine2: String?,
 
-    //@field:NotNull
     @Column(name = "zip_code")
     @ApiModelProperty(notes = "Zip code of address", example = "39674207", required = false)
     val zipCode: String?,
 
-    //@field:NotEmpty
     @Column(name = "city")
     @ApiModelProperty(notes = "City of address", example = "Joinville", required = false)
     val city: String?,
@@ -76,7 +74,11 @@ class Person(
     @ApiModelProperty(notes = "Area code", example = "47", required = true)
     val phoneAreaCode: Int,
 
-    @field:Pattern(regexp = "\\d{5}-\\d{4}", message = "Please, insert a valid phone!")
+
+    @field:Pattern(
+        regexp = "\\d{5}-\\d{4}",
+        message = "Please, insert a valid phone!"
+    )
     @Column(name = "phone_number")
     @ApiModelProperty(notes = "Number", example = "000000000", required = true)
     val phoneNumber: String

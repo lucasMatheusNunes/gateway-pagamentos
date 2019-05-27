@@ -3,7 +3,7 @@ package com.gateway.pagamentos.gateway.entity
 import io.swagger.annotations.ApiModel
 import io.swagger.annotations.ApiModelProperty
 import javax.persistence.*
-import javax.validation.constraints.NotNull
+import javax.validation.constraints.*
 
 @Entity
 @Table(name = "payment_reversal")
@@ -18,12 +18,13 @@ class PaymentReversal (
         @field:NotNull(message = "ID of merchant is required!")
         @Column(name = "id_merchant")
         @ApiModelProperty(notes = "Unique identifier reference of merchant", example = "6", required = true)
-        var idMerchant: Int,
+        var idMerchant: Int?,
+
 
         @field:NotNull(message = "ID transaction is required!")
         @Column(name = "id_transaction")
         @ApiModelProperty(notes = "Unique identifier reference of transaction", example = "3", required = true)
-        var idTransaction : Int,
+        var idTransaction : Int?,
 
         @Column(name = "amount")
         @ApiModelProperty(notes = "Value reversal, this value must be in cents", required = true)

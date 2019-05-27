@@ -1,6 +1,8 @@
 package com.gateway.pagamentos.gateway.controller
 
 import com.gateway.pagamentos.gateway.callback.SuccessCallback
+import com.gateway.pagamentos.gateway.callback.RequiredFieldCallback
+import com.gateway.pagamentos.gateway.exception.ApiFieldError
 import com.gateway.pagamentos.gateway.dataRandom.GenericRandom
 import com.gateway.pagamentos.gateway.dataRandom.PaymentReversalRandom
 import com.gateway.pagamentos.gateway.entity.PaymentReversal
@@ -17,38 +19,52 @@ import javax.validation.Valid
 @Api(description = "REST api related to Payment reversal")
 class PaymentReversalController {
 
-    private var paymentReversalRandom : PaymentReversalRandom = PaymentReversalRandom()
-    private var genericRandom : GenericRandom = GenericRandom()
+    private var paymentReversalRandom: PaymentReversalRandom = PaymentReversalRandom()
+    private var genericRandom: GenericRandom = GenericRandom()
 
     @ApiOperation(
-            value = "Get list of Payments reversal",
-            response = PaymentReversal::class
+        value = "Get list of Payments reversal",
+        response = PaymentReversal::class
     )
     @GetMapping(produces = arrayOf("application/json"))
-    fun getAll( @RequestHeader("token") token : String) : ArrayList<PaymentReversal> {
+    fun getAll(@RequestHeader("token") token: String): ArrayList<PaymentReversal> {
         return paymentReversalRandom.getAll()
     }
 
     @ApiOperation(
-            value = "Get Payment reversal by id",
-            response = PaymentReversal::class
+        value = "Get Payment reversal by id",
+        response = PaymentReversal::class
     )
     @GetMapping("/{id}", produces = arrayOf("application/json"))
-    fun getOne(@PathVariable("id") id : Int, @RequestHeader("token") token : String) : PaymentReversal {
+    fun getOne(@PathVariable("id") id: Int, @RequestHeader("token") token: String): PaymentReversal {
         return paymentReversalRandom.getById(id)
     }
 
     @ApiOperation(
-            value = "Reverse payment",
-            response = SuccessCallback::class
+        value = "Reverse payment",
+        response = SuccessCallback::class
     )
     @PostMapping(produces = arrayOf("application/json"))
-    fun add(@Valid @RequestBody paymentReversal : PaymentReversal, binding : BindingResult, @RequestHeader("token") token : String) : ResponseEntity<Any> {
-        return if(binding.hasErrors()) {
-            ResponseEntity(binding.fieldError, HttpStatus.BAD_REQUEST)
-        }else {
-            ResponseEntity(SuccessCallback("canceled_payment", "Payment canceled with success", genericRandom.getRandomInt()), HttpStatus.OK)
+    fun add(@Valid @RequestBody paymentReversal: PaymentReversal, binding: BindingResult, @RequestHeader("token") token: String): ResponseEntity<Any> {
+        return if (binding.hasErrors()) {
+            val errors = ArrayList<RequiredFieldCallback>()
+            binding.fieldErrors.forEach {
+                errors.add(
+                    RequiredFieldCallback(it.field, it.defaultMessage)
+                )
+            }
+            val apiError = ApiFieldError(HttpStatus.BAD_REQUEST, "", errors)
+            return ResponseEntity(apiError, HttpStatus.BAD_REQUEST)
+        } else {
+            return ResponseEntity(
+                SuccessCallback(
+                    "canceled_payment",
+                    "Payment canceled with success",
+                    genericRandom.getRandomInt()
+                ), HttpStatus.OK
+            )
         }
     }
 
 }
+
