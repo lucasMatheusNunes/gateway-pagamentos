@@ -3,8 +3,7 @@ package com.gateway.pagamentos.gateway.entity
 import io.swagger.annotations.ApiModel
 import io.swagger.annotations.ApiModelProperty
 import javax.persistence.*
-import javax.validation.constraints.NotEmpty
-import javax.validation.constraints.NotNull
+import javax.validation.constraints.*
 
 @Entity
 @Table(name="payment")
