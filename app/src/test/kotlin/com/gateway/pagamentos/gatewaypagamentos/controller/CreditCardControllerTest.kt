@@ -39,6 +39,7 @@ class CreditCardControllerTest {
     @Throws(Exception::class)
     fun findOneTest() {
         this.mockMvc!!.perform(MockMvcRequestBuilders.get("/credit_card/1"))
+            .andDo(MockMvcResultHandlers.print())
             .andExpect(status().isOk)
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
     }
@@ -61,6 +62,7 @@ class CreditCardControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JSONObject(credit).toString())
         )
+            .andDo(MockMvcResultHandlers.print())
             .andExpect(status().isCreated)
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
             .andExpect(jsonPath("$.id").isNotEmpty)
@@ -105,7 +107,55 @@ class CreditCardControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JSONObject(credit).toString())
         )
+            .andDo(MockMvcResultHandlers.print())
             .andExpect(status().isBadRequest)
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+    }
+
+    @Test
+    @Throws(Exception::class)
+    fun addExpirationMore() {
+        val credit = mapOf(
+            "clientId" to 1,
+            "statementDescriptor" to "JOSE SILVA",
+            "number" to "1234567890987",
+            "holderName" to "JOSE SILVA",
+            "holderDocument" to "10188607030",
+            "expirationDate" to "042020",
+            "cvv" to "187"
+        )
+
+        this.mockMvc!!.perform(
+            MockMvcRequestBuilders.post("/credit_card")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(JSONObject(credit).toString())
+        )
+            .andDo(MockMvcResultHandlers.print())
+            .andExpect(status().isBadRequest)
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+    }
+
+    @Test
+    @Throws(Exception::class)
+    fun addExpirationRegex() {
+        val credit = mapOf(
+            "clientId" to 1,
+            "statementDescriptor" to "JOSE SILVA",
+            "number" to "1234567890987",
+            "holderName" to "JOSE SILVA",
+            "holderDocument" to "10188607030",
+            "expirationDate" to "04/2",
+            "cvv" to "187"
+        )
+
+        this.mockMvc!!.perform(
+            MockMvcRequestBuilders.post("/credit_card")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(JSONObject(credit).toString())
+        )
+            .andDo(MockMvcResultHandlers.print())
+            .andExpect(status().isBadRequest)
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
     }
 
     @Test
@@ -126,6 +176,7 @@ class CreditCardControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JSONObject(credit).toString())
         )
+            .andDo(MockMvcResultHandlers.print())
             .andExpect(status().isBadRequest)
     }
 
@@ -147,7 +198,9 @@ class CreditCardControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JSONObject(credit).toString())
         )
+            .andDo(MockMvcResultHandlers.print())
             .andExpect(status().isBadRequest)
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
     }
 
     @Test
@@ -169,6 +222,8 @@ class CreditCardControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JSONObject(credit).toString())
         )
+            .andDo(MockMvcResultHandlers.print())
             .andExpect(status().isBadRequest)
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
     }
 }
