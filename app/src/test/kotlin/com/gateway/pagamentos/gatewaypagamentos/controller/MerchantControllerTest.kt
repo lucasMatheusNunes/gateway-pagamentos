@@ -1,6 +1,7 @@
 package com.gateway.pagamentos.gatewaypagamentos.controller
 
 import com.gateway.pagamentos.gateway.controller.MerchantController
+import com.gateway.pagamentos.gateway.exception.ExceptionHandlerAdvice
 import org.hamcrest.core.IsNot.not
 import org.json.JSONObject
 import org.junit.Before
@@ -30,6 +31,7 @@ class MerchantControllerTest {
     fun setUp() {
         MockitoAnnotations.initMocks(this)
         this.mockMvc = MockMvcBuilders.standaloneSetup(merchantController)
+            .setControllerAdvice(ExceptionHandlerAdvice())
             .build()
     }
 

@@ -17,6 +17,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers.print
 import org.springframework.http.HttpStatus
 import com.gateway.pagamentos.gateway.exception.ApiError
+import com.gateway.pagamentos.gateway.exception.ExceptionHandlerAdvice
 import junit.framework.Assert.assertEquals
 import junit.framework.Assert.assertTrue
 import org.hamcrest.CoreMatchers.hasItem
@@ -34,7 +35,9 @@ class PaymentControllerTest {
     @Before
     fun setUp() {
         MockitoAnnotations.initMocks(this);
-        this.mockMvc = MockMvcBuilders.standaloneSetup(paymentController).build()
+        this.mockMvc = MockMvcBuilders.standaloneSetup(paymentController)
+            .setControllerAdvice(ExceptionHandlerAdvice())
+            .build()
     }
 
     @Test
