@@ -1,6 +1,7 @@
 package com.gateway.pagamentos.gatewaypagamentos.controller
 
 import com.gateway.pagamentos.gateway.controller.CreditCardController
+import org.hamcrest.CoreMatchers
 import org.hamcrest.core.IsNot.not
 import org.json.JSONObject
 import org.junit.Before
@@ -12,6 +13,8 @@ import org.springframework.http.MediaType
 import org.springframework.test.context.junit4.SpringRunner
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.content
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
@@ -72,7 +75,16 @@ class CreditCardControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{}")
         )
-            .andExpect(status().isBadRequest)
+            .andDo(MockMvcResultHandlers.print())
+            .andExpect(MockMvcResultMatchers.status().isBadRequest)
+            .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_UTF8))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.errors[*].field", CoreMatchers.hasItem("clientId")))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.errors[*].field", CoreMatchers.hasItem("statementDescriptor")))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.errors[*].field", CoreMatchers.hasItem("number")))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.errors[*].field", CoreMatchers.hasItem("holderName")))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.errors[*].field", CoreMatchers.hasItem("holderDocument")))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.errors[*].field", CoreMatchers.hasItem("expirationDate")))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.errors[*].field", CoreMatchers.hasItem("cvv")))
     }
 
     @Test
