@@ -1,6 +1,7 @@
 package com.gateway.pagamentos.gatewaypagamentos.controller
 
 import com.gateway.pagamentos.gateway.controller.PaymentReversalController
+import com.gateway.pagamentos.gateway.exception.ExceptionHandlerAdvice
 import org.hamcrest.core.IsNot
 import org.json.JSONObject
 import org.junit.Before
@@ -29,7 +30,9 @@ class PaymentReversalCTest {
     @Before
     fun setUp() {
         MockitoAnnotations.initMocks(this);
-        this.mockMvc = MockMvcBuilders.standaloneSetup(prc).build();
+        this.mockMvc = MockMvcBuilders.standaloneSetup(prc)
+            .setControllerAdvice(ExceptionHandlerAdvice())
+            .build()
     }
 
     // TESTS

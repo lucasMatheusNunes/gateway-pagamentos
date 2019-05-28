@@ -1,17 +1,18 @@
 package com.gateway.pagamentos.gateway.controller
 
-import com.gateway.pagamentos.gateway.callback.RequiredFieldCallback
 import com.gateway.pagamentos.gateway.callback.SuccessCallback
 import com.gateway.pagamentos.gateway.dataRandom.GenericRandom
 import com.gateway.pagamentos.gateway.entity.CreditCard
-import com.gateway.pagamentos.gateway.exception.ApiFieldError
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
-import org.springframework.validation.BindingResult
-import org.springframework.web.bind.annotation.*
-import java.util.ArrayList
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RestController
 import javax.validation.Valid
 
 @RestController
@@ -45,19 +46,6 @@ class CreditCardController {
     @PostMapping(consumes = arrayOf("application/json"), produces = arrayOf("application/json"))
     fun add(@Valid @RequestBody creditCard: CreditCard): ResponseEntity<Any> {
 
-        /*return if(binding.hasErrors()) {
-            val errors = ArrayList<RequiredFieldCallback>()
-
-            binding.fieldErrors.forEach { errors.add(
-                RequiredFieldCallback(it.field, it.defaultMessage)
-            ) }
-
-            val apiError = ApiFieldError(HttpStatus.BAD_REQUEST, "", errors)
-
-            ResponseEntity(apiError, HttpStatus.BAD_REQUEST)
-        }else {
-            ResponseEntity(SuccessCallback("credit_card_created","Credit Card created with successful",genericRandom.getRandomInt()), HttpStatus.CREATED)
-        }*/
         return ResponseEntity(SuccessCallback("credit_card_created","Credit Card created with successful",genericRandom.getRandomInt()), HttpStatus.CREATED)
     }
 }

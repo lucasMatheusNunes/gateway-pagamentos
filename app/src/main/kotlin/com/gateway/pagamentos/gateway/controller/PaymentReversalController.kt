@@ -46,24 +46,13 @@ class PaymentReversalController {
     )
     @PostMapping(produces = arrayOf("application/json"))
     fun add(@Valid @RequestBody paymentReversal: PaymentReversal, binding: BindingResult, @RequestHeader("token") token: String): ResponseEntity<Any> {
-        return if (binding.hasErrors()) {
-            val errors = ArrayList<RequiredFieldCallback>()
-            binding.fieldErrors.forEach {
-                errors.add(
-                    RequiredFieldCallback(it.field, it.defaultMessage)
-                )
-            }
-            val apiError = ApiFieldError(HttpStatus.BAD_REQUEST, "", errors)
-            return ResponseEntity(apiError, HttpStatus.BAD_REQUEST)
-        } else {
-            return ResponseEntity(
+        return ResponseEntity(
                 SuccessCallback(
                     "canceled_payment",
                     "Payment canceled with success",
                     genericRandom.getRandomInt()
                 ), HttpStatus.OK
             )
-        }
     }
 
 }
